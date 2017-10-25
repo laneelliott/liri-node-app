@@ -56,12 +56,21 @@ function spotifyThisSong(){
 	//User Input
 	var searchQuery = process.argv[3];
 
+	//Default searchQuery
+	if(!searchQuery){
+		searchQuery = 'The Sign';
+	}
+
 	//Spotify API Call
 	spotify.search({ type: 'track', query: searchQuery }, function(err, data) {
 	  if (err) {
 	    return console.log('Error occurred: ' + err);
 	  }
-	 
-	console.log(data.tracks.items[0]); 
+	console.log('===========================================================');
+	console.log('Search: ' + searchQuery);
+	console.log('Album: ' + data.tracks.items[0].album.name); 
+	console.log('Artist: ' + data.tracks.items[0].album.artists[0].name);
+	console.log('Album Cover: ' + data.tracks.items[0].album.images[0].url);
+	console.log('===========================================================');
 	});
 }
