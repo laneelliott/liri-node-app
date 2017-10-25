@@ -13,6 +13,12 @@ switch(command) {
     case 'spotify-this-song':
         spotifyThisSong();
         break;
+    case 'movie-this':
+        movieThis();
+        break;
+    case 'do-what-it-says':
+        doWhatItSays();
+        break;
     default:
         console.log('Try one of these commands: "my-tweets" "spotify-this-song" "movie-this" "do-what-it-says"')
 }
@@ -73,4 +79,12 @@ function spotifyThisSong(){
 	console.log('Album Cover: ' + data.tracks.items[0].album.images[0].url);
 	console.log('===========================================================');
 	});
+}
+
+function movieThis(){
+	console.log('movie this');
+}
+
+function doWhatItSays(){
+	console.log('do what is says');
 }
