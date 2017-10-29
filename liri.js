@@ -2,6 +2,8 @@
 var keys = require('./keys.js');
 //console.log(keys);
 
+var request = require('request');
+
 var command = process.argv[2];
 //console.log(command)
 
@@ -38,13 +40,10 @@ function myTweets(){
 	var params = {screen_name: 'nodejs'};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
 	  if (!error) {
-	  	console.log('==========================================================');
-	  	console.log('===================== READING TWEETS =====================');
-	  	console.log('==========================================================');
+	  	console.log('\n===================== READING TWEETS =====================\n');
 	  	for(var i=0; i<20; i++){
 	  		console.log(tweets[i].text);
 	  		console.log(tweets[i].created_at);
-	  		console.log('===========================================================');
 	  	}
 	  }
 	});
@@ -72,19 +71,49 @@ function spotifyThisSong(){
 	  if (err) {
 	    return console.log('Error occurred: ' + err);
 	  }
-	console.log('===========================================================');
+	console.log(data.tracks.items[0])
+	console.log('\n==================== SEARCHING SPOTIFY =====================\n');
 	console.log('Search: ' + searchQuery);
 	console.log('Album: ' + data.tracks.items[0].album.name); 
 	console.log('Artist: ' + data.tracks.items[0].album.artists[0].name);
 	console.log('Album Cover: ' + data.tracks.items[0].album.images[0].url);
-	console.log('===========================================================');
+	console.log('Preview Url: ' + data.tracks.items[0].preview_url);
 	});
 }
 
 function movieThis(){
-	console.log('movie this');
+	var movie = process.argv[3];
+	console.log(movie)
+	if(movie === undefined){
+		movie = 'Mr Nobody'
+		console.log(movie)
+	}
+	request('http://www.omdbapi.com/?apikey=40e9cece&t='+movie, function (error, response, body) {
+	  if(error){
+	  	return console.log('error:', error); // Print the error if one occurred
+	  }
+	  var data = JSON.parse(body)
+	  console.log('\n=================== SEARCHING OMDB ====================\n');
+	  console.log('Title: '+data.Title);
+	  console.log('Year: '+data.Year);
+	  console.log('Rating: '+data.Ratings[0].Value);
+	  console.log('Country: '+data.Country);
+	  console.log('Language: '+data.Language);
+	  console.log('Plot: '+data.Plot);
+	  console.log('Actors: '+data.Actors);
+	});
 }
 
 function doWhatItSays(){
 	console.log('do what is says');
 }
+
+
+
+
+
+
+
+
+
+
