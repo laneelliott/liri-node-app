@@ -1,29 +1,33 @@
 //Gather Keys
 var keys = require('./keys.js');
-//console.log(keys);
-
+//Node Package Requirements
 var request = require('request');
+var fs = require('fs');
 
 var command = process.argv[2];
+var search = process.argv[3];
 //console.log(command)
 
 //Command Switch
-switch(command) {
-    case 'my-tweets':
-        myTweets();
-        break;
-    case 'spotify-this-song':
-        spotifyThisSong();
-        break;
-    case 'movie-this':
-        movieThis();
-        break;
-    case 'do-what-it-says':
-        doWhatItSays();
-        break;
-    default:
-        console.log('Try one of these commands: "my-tweets" "spotify-this-song" "movie-this" "do-what-it-says"')
+function commandProcess(command, search){
+	switch(command) {
+	    case 'my-tweets':
+	        myTweets();
+	        break;
+	    case 'spotify-this-song':
+	        spotifyThisSong(search);
+	        break;
+	    case 'movie-this':
+	        movieThis(search);
+	        break;
+	    case 'do-what-it-says':
+	        doWhatItSays();
+	        break;
+	    default:
+	        console.log('Try one of these commands: "my-tweets" "spotify-this-song" "movie-this" "do-what-it-says"')
+	}
 }
+
 
 function myTweets(){
 	//Twitter Credentials and Variables
@@ -49,7 +53,7 @@ function myTweets(){
 	});
 }
 
-function spotifyThisSong(){
+function spotifyThisSong(search){
 	//Spotify Credentials and Variables
 	var Spotify = require('node-spotify-api');
 	var spotifyKeys = keys.spotifyKeys;
@@ -59,7 +63,7 @@ function spotifyThisSong(){
 	});
 
 	//User Input
-	var searchQuery = process.argv[3];
+	var searchQuery = search
 
 	//Default searchQuery
 	if(!searchQuery){
@@ -71,7 +75,6 @@ function spotifyThisSong(){
 	  if (err) {
 	    return console.log('Error occurred: ' + err);
 	  }
-	console.log(data.tracks.items[0])
 	console.log('\n==================== SEARCHING SPOTIFY =====================\n');
 	console.log('Search: ' + searchQuery);
 	console.log('Album: ' + data.tracks.items[0].album.name); 
@@ -81,8 +84,8 @@ function spotifyThisSong(){
 	});
 }
 
-function movieThis(){
-	var movie = process.argv[3];
+function movieThis(search){
+	var movie = search;
 	console.log(movie)
 	if(movie === undefined){
 		movie = 'Mr Nobody'
@@ -105,8 +108,21 @@ function movieThis(){
 }
 
 function doWhatItSays(){
-	console.log('do what is says');
+	//Reads the file random.txt and executes the callback function.
+	fs.readFile("random.txt", "utf8", function(error, data) {
+	  // If the code experiences any errors it will log the error to the console.
+	  if (error) {
+	    return console.log(error);
+	  }
+	  // Splits the data on the comma into an array
+	  var dataArr = data.split(",");
+	  // Calls the commandProcess function by passing both the command and search term.
+	  console.log(dataArr);
+	  commandProcess(dataArr[0], dataArr[1])
+	});
 }
+
+commandProcess(command, search);
 
 
 
