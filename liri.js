@@ -1,15 +1,20 @@
-//Gather Keys
+//Gather Keys from keys.js file.
 var keys = require('./keys.js');
 //Node Package Requirements
 var request = require('request');
 var fs = require('fs');
 
+//Grabs the commandline arguments used for later logic and sets them in variables.
 var command = process.argv[2];
 var search = process.argv[3];
-//console.log(command)
 
-//Command Switch
+
+//Command Switch takes in a command from either the command line or a parameter passed to it.
 function commandProcess(command, search){
+	//Log the command and search term to log.txt
+	logMe('\n========= COMMAND =========\n')
+	logMe(command)
+
 	switch(command) {
 	    case 'my-tweets':
 	        myTweets();
@@ -40,14 +45,17 @@ function myTweets(){
 	  access_token_secret: twitterKeys.access_token_secret
 	});
 	
-	//Tweet API Call
+	//Twitter API Call
 	var params = {screen_name: 'nodejs'};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
 	  if (!error) {
 	  	console.log('\n===================== READING TWEETS =====================\n');
+	  	logMe('\n===================== READING TWEETS =====================\n');
 	  	for(var i=0; i<20; i++){
 	  		console.log(tweets[i].text);
+	  		logMe(tweets[i].text);
 	  		console.log(tweets[i].created_at);
+	  		logMe(tweets[i].created_at);
 	  	}
 	  }
 	});
@@ -81,6 +89,13 @@ function spotifyThisSong(search){
 	console.log('Artist: ' + data.tracks.items[0].album.artists[0].name);
 	console.log('Album Cover: ' + data.tracks.items[0].album.images[0].url);
 	console.log('Preview Url: ' + data.tracks.items[0].preview_url);
+	//log console output to log.txt
+	logMe('\n==================== SEARCHING SPOTIFY =====================\n');
+	logMe('Search: ' + searchQuery);
+	logMe('Album: ' + data.tracks.items[0].album.name); 
+	logMe('Artist: ' + data.tracks.items[0].album.artists[0].name);
+	logMe('Album Cover: ' + data.tracks.items[0].album.images[0].url);
+	logMe('Preview Url: ' + data.tracks.items[0].preview_url);
 	});
 }
 
@@ -104,6 +119,15 @@ function movieThis(search){
 	  console.log('Language: '+data.Language);
 	  console.log('Plot: '+data.Plot);
 	  console.log('Actors: '+data.Actors);
+	  //log console output to log.txt
+	  logMe('\n=================== SEARCHING OMDB ====================\n');
+	  logMe('Title: '+data.Title);
+	  logMe('Year: '+data.Year);
+	  logMe('Rating: '+data.Ratings[0].Value);
+	  logMe('Country: '+data.Country);
+	  logMe('Language: '+data.Language);
+	  logMe('Plot: '+data.Plot);
+	  logMe('Actors: '+data.Actors);
 	});
 }
 
@@ -119,6 +143,16 @@ function doWhatItSays(){
 	  // Calls the commandProcess function by passing both the command and search term.
 	  console.log(dataArr);
 	  commandProcess(dataArr[0], dataArr[1])
+	});
+}
+
+function logMe(text){
+	//Log the parameter passed through text.
+	fs.appendFile('log.txt', text+'\n', function(err) {
+	  // If an error was experienced we say it.
+	  if (err) {
+	    console.log("error: "+err);
+	  }
 	});
 }
 

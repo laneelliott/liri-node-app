@@ -1,0 +1,16 @@
+
+========= COMMAND =========
+
+do-what-it-says
+
+========= COMMAND =========
+
+spotify-this-song
+Search: "I Want it That Way"
+
+==================== SEARCHING SPOTIFY =====================
+
+Album: The Hits--Chapter One
+Artist: Backstreet Boys
+Album Cover: https://i.scdn.co/image/91142eab23c3273fa73e490f2d04464c69423f75
+Preview Url: https://p.scdn.co/mp3-preview/e72a05dc3f69c891e3390c3ceaa77fad02f6b5f6?cid=e83c07df9be34e46a3839e2f8c284769
